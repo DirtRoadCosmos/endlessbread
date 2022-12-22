@@ -64,10 +64,10 @@ function drawArrows() {
       currStep = -STEP;
       fill(255, 0, 0);
     }
-    text("🡲", width-50, 50);
+    text(">", width-50, 50);
   } else {
     fill(150);
-    text("🡲", width-50, 50);
+    text(">", width-50, 50);
   }
   if (dist(mouseX,mouseY,arrowBuffer,arrowBuffer) < arrowRadius) {
     fill(200, 50, 50);
@@ -75,10 +75,10 @@ function drawArrows() {
       currStep = STEP;
       fill(255, 0, 0);
     }
-    text("🡰", 50, 50);
+    text("<", 50, 50);
   } else {
     fill(150);
-    text("🡰", 50, 50);
+    text("<", 50, 50);
   }
   
 }
