@@ -18,13 +18,15 @@ let prevStep = 0;
 const OVERLAP = 20;
 let centerX = 0;
 let sliceWidth = 0;
+let arrowBuffer = 50;
+let arrowRadius = 50;
 
 function preload() {
   img = loadImage('bread.jpg');
 }
 
 function setup() {
-  createCanvas(400, windowHeight);
+  createCanvas(windowWidth>600?600:windowWidth, windowHeight>600?600:windowHeight);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
   setImageSize();
@@ -50,6 +52,35 @@ function draw() {
   moveX(currStep);
   prevStep = currStep;
   drawScale();
+  drawArrows();
+}
+
+function drawArrows() {
+  textSize(50);
+  noStroke();
+  if (dist(mouseX,mouseY,width-arrowBuffer,arrowBuffer) < arrowRadius) {
+    fill(200, 50, 50);
+    if (mouseIsPressed) {
+      currStep = -STEP;
+      fill(255, 0, 0);
+    }
+    text("🡲", width-50, 50);
+  } else {
+    fill(150);
+    text("🡲", width-50, 50);
+  }
+  if (dist(mouseX,mouseY,arrowBuffer,arrowBuffer) < arrowRadius) {
+    fill(200, 50, 50);
+    if (mouseIsPressed) {
+      currStep = STEP;
+      fill(255, 0, 0);
+    }
+    text("🡰", 50, 50);
+  } else {
+    fill(150);
+    text("🡰", 50, 50);
+  }
+  
 }
 
 function drawScale() {
