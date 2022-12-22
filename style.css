@@ -14,3 +14,7 @@ body {
   /* This centers our sketch vertically. */
   align-items: center;
 }
+
+img{
+-webkit-touch-callout: none !important; 
+ -webkit-user-select: none !important; }
