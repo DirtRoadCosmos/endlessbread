@@ -9,36 +9,33 @@ Canvas Sprite Group Tiles
 
 let player, floor;
 let img;
-let x1;
-let x2;
 let y;
+const ARROW_BUFFER = 80;
+const ARROW_RADIUS = 80;
 const STEP = 5;
 let currStep = 0;
 let prevStep = 0;
 const OVERLAP = 20;
 let centerX = 0;
 let sliceWidth = 0;
-let arrowBuffer = 50;
-let arrowRadius = 50;
+let scorePos = 0;
+let scoreNeg = 0;
 
 function preload() {
-  img = loadImage('bread.jpg');
+  img = loadImage('bread.png');
+  bg = loadImage('background-panera.png')
 }
 
 function setup() {
-  createCanvas(windowWidth>600?600:windowWidth, windowHeight>600?600:windowHeight);
+  createCanvas(windowWidth, windowHeight);
+  // createCanvas(windowWidth>600?600:windowWidth, windowHeight>600?600:windowHeight);
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
   setImageSize();
-  x1 = 0;
-  x2 = width;
-  sliceWidth = width/10;
 }
 
 function draw() {
-  background(255);
-  image(img, x1, y);
-  image(img, x2, y);
+  background(bg);
   if (keyIsDown(LEFT_ARROW)) {
     currStep = STEP;
   } else if (prevStep > 0) {
@@ -51,40 +48,103 @@ function draw() {
   }
   moveX(currStep);
   prevStep = currStep;
+  drawBread();
   drawScale();
   drawArrows();
+  updateScore();
+  showScore();
+  showMenu();
+}
+
+function showMenu() {
+  textAlign(RIGHT, TOP);
+  textSize(15);
+  fill(200);
+  text("v1.1", width-10, 10);
+}
+
+function drawBread() {
+  let x = (centerX % img.width) - img.width * 2;
+  while (x < width) {
+    image(img, x, y);
+    x += img.width;
+  }
+}
+
+function setImageSize() {
+  let baselineResize = 1;
+  let zoomFactor = 1;
+  img.resize(img.width / baselineResize, img.height / baselineResize);
+  sliceWidth = img.width / 10;
+  y = height - img.height;
+  // // fit one img to screen
+  // let widthFactor = img.width / width;
+  // img.resize(img.width / widthFactor, img.height / widthFactor);
+  // y = height - img.height;
+}
+
+function showScore() {
+  push();
+  translate(width/2, 30);
+  fill(255);
+  textSize(30);
+  textAlign(CENTER, CENTER);
+  text("YOUR HIGH SCORES", 0, 0);
+  textSize(40);
+  textAlign(LEFT, CENTER);
+  text(scorePos, 20, 40);
+  textAlign(RIGHT, CENTER);
+  text(scoreNeg, -20, 40);
+  pop();
+}
+
+function getLocation() {
+  return round(-1 * centerX / sliceWidth);
+}
+
+function updateScore() {
+  let currentLoc = getLocation();
+  let currentRight = round(currentLoc + (width/2 / sliceWidth));
+  let currentLeft = round(currentLoc - (width/2 / sliceWidth));
+  if (currentRight > scorePos) {
+    scorePos = currentRight;
+  }
+  if (currentLeft < scoreNeg) {
+    scoreNeg = currentLeft;
+  }
 }
 
 function drawArrows() {
-  textSize(50);
+  textSize(ARROW_RADIUS);
+  textAlign(CENTER, CENTER);
   noStroke();
-  if (dist(mouseX,mouseY,width-arrowBuffer,arrowBuffer) < arrowRadius) {
+  if (dist(mouseX,mouseY,width-ARROW_BUFFER,ARROW_BUFFER) < ARROW_RADIUS/2) {
     fill(200, 50, 50);
     if (mouseIsPressed) {
       currStep = -STEP;
       fill(255, 0, 0);
     }
-    text(">", width-50, 50);
+    text(">", width-ARROW_BUFFER, ARROW_BUFFER);
   } else {
-    fill(150);
-    text(">", width-50, 50);
+    fill(255);
+    text(">", width-ARROW_BUFFER, ARROW_BUFFER);
   }
-  if (dist(mouseX,mouseY,arrowBuffer,arrowBuffer) < arrowRadius) {
+  if (dist(mouseX,mouseY,ARROW_BUFFER,ARROW_BUFFER) < ARROW_RADIUS/2) {
     fill(200, 50, 50);
     if (mouseIsPressed) {
       currStep = STEP;
       fill(255, 0, 0);
     }
-    text("<", 50, 50);
+    text("<", ARROW_BUFFER, ARROW_BUFFER);
   } else {
-    fill(150);
-    text("<", 50, 50);
+    fill(255);
+    text("<", ARROW_BUFFER, ARROW_BUFFER);
   }
   
 }
 
 function drawScale() {
-  fill(0);
+  fill(255);
   rect(width/2, y, width, 10);
   drawNums();
 }
@@ -93,11 +153,13 @@ function drawNums() {
   push();
   translate(width/2, y);
   let centerishNum = -centerX / sliceWidth;
-  const RANGE = 25;
+  const RANGE = width / sliceWidth * 4;
   let minNum = Math.floor(centerishNum - RANGE/2);
   let maxNum = Math.floor(centerishNum + RANGE/2);
   for (let num = minNum; num < maxNum; num++) {
     let x = centerX + sliceWidth * num;
+    textAlign(CENTER, CENTER);
+    fill(255);
     if (num % 5 == 0) {
       rect(x, -10, 5, 20);
       textSize(30);
@@ -121,26 +183,6 @@ function fudge(n) {
 
 function moveX(step) {
   centerX += step;
-  x1 += step;
-  if (x1 > width) {
-    x1 = -width + (STEP + OVERLAP);
-  }
-  if (x1 < -width) {
-    x1 = width - (STEP + OVERLAP);
-  }
-  x2 += step;
-  if (x2 > width) {
-    x2 = -width + (STEP + OVERLAP);
-  }
-  if (x2 < -width) {
-    x2 = width - (STEP + OVERLAP);
-  }
-}
-
-function setImageSize() {
-  let widthFactor = img.width / width;
-  img.resize(img.width / widthFactor, img.height / widthFactor);
-  y = height - img.height;
 }
 
 function windowResized() {
