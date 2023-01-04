@@ -87,14 +87,12 @@ function showScore() {
   push();
   translate(width/2, 30);
   fill(0);
-  textSize(30);
+  textSize(20);
   textAlign(CENTER, CENTER);
-  text("YOUR HIGH SCORES", 0, 0);
+  text("SLICES YOU'VE SEEN", 0, 0);
   textSize(40);
-  textAlign(LEFT, CENTER);
-  text(scorePos, 20, 40);
-  textAlign(RIGHT, CENTER);
-  text(scoreNeg, -20, 40);
+  textAlign(CENTER, CENTER);
+  text(scoreNeg + " ... " + scorePos, 0, 40);
   pop();
 }
 
