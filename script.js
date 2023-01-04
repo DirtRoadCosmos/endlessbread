@@ -35,7 +35,7 @@ function setup() {
 }
 
 function draw() {
-  background(bg);
+  background(255);
   if (keyIsDown(LEFT_ARROW)) {
     currStep = STEP;
   } else if (prevStep > 0) {
@@ -59,7 +59,7 @@ function draw() {
 function showMenu() {
   textAlign(RIGHT, TOP);
   textSize(15);
-  fill(200);
+  fill(150);
   text("v1.1", width-10, 10);
 }
 
@@ -86,7 +86,7 @@ function setImageSize() {
 function showScore() {
   push();
   translate(width/2, 30);
-  fill(255);
+  fill(0);
   textSize(30);
   textAlign(CENTER, CENTER);
   text("YOUR HIGH SCORES", 0, 0);
@@ -126,7 +126,7 @@ function drawArrows() {
     }
     text(">", width-ARROW_BUFFER, ARROW_BUFFER);
   } else {
-    fill(255);
+    fill(0);
     text(">", width-ARROW_BUFFER, ARROW_BUFFER);
   }
   if (dist(mouseX,mouseY,ARROW_BUFFER,ARROW_BUFFER) < ARROW_RADIUS/2) {
@@ -137,14 +137,14 @@ function drawArrows() {
     }
     text("<", ARROW_BUFFER, ARROW_BUFFER);
   } else {
-    fill(255);
+    fill(0);
     text("<", ARROW_BUFFER, ARROW_BUFFER);
   }
   
 }
 
 function drawScale() {
-  fill(255);
+  fill(0);
   rect(width/2, y, width, 10);
   drawNums();
 }
@@ -159,7 +159,7 @@ function drawNums() {
   for (let num = minNum; num < maxNum; num++) {
     let x = centerX + sliceWidth * num;
     textAlign(CENTER, CENTER);
-    fill(255);
+    fill(0);
     if (num % 5 == 0) {
       rect(x, -10, 5, 20);
       textSize(30);
