@@ -1,4 +1,4 @@
-window.location.replace("wow-endless-bread.glitch.me");
+window.location.replace("https://wow-endless-bread.glitch.me");
 
 // /* global
 // background createCanvas fill rect random
